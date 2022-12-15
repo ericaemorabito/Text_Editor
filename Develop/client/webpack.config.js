@@ -1,6 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const { InjectManifest } = require('workbox-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 //! Added workbox plugin
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const path = require('path');
@@ -16,9 +18,10 @@ module.exports = () => {
       install: './src/js/install.js'
     },
     output: {
-      filename: 'bundle.js',
+      filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
     },
+
     plugins: [
       //! Added this
       new HtmlWebpackPlugin({
@@ -28,7 +31,7 @@ module.exports = () => {
       //! CSS extract into own file
       new MiniCssExtractPlugin(),
       //! WorkBox generates SW for us
-      new WorkboxPlugin.GenerateSW(),
+      new GenerateSW(),
       //! Added this for generating manifest
       new WebpackPwaManifest({
         name: 'Just Another Text Editor',
@@ -51,7 +54,7 @@ module.exports = () => {
 
     module: {
       rules: [
-        //! I add lines below 
+        //! I added lines below
         // Adding in the CSS loader
         {
           test: /\.css$/i,
